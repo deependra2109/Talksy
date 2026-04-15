@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talksy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-wrap">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>Talksy</h1>
+          <p>Real-time messaging</p>
+        </div>
+      </div>
+
+      <div class="auth-tabs" id="auth-tabs">
+        <button class="auth-tab active" id="tab-login"    onclick="switchTab('login')">Sign in</button>
+        <button class="auth-tab"        id="tab-register" onclick="switchTab('register')">Create account</button>
+      </div>
+
+      <div id="auth-error" class="auth-error"></div>
+
+      <div id="form-login" class="auth-form">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="login-username" placeholder="your username" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+        </div>
+        <button type="button" class="btn-main" onclick="doLogin()">Sign in</button>
+      </div>
+
+      <div id="form-register" class="auth-form" style="display:none">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="reg-username" placeholder="choose a username" />
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="reg-password" placeholder="min 8 characters" onkeydown="if(event.key==='Enter')doRegister()" />
+        </div>
+        <button type="button" class="btn-main" onclick="doRegister()">Create account</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="app-screen" class="app-hidden">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="tb-left">
+      <div class="app-brand">
+        <div class="logo-icon sm">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span>Talksy</span>
+      </div>
+    </div>
+    <div class="tb-right">
+      <div class="conn-status">
+        <span class="conn-dot" id="conn-dot"></span>
+        <span class="conn-txt" id="conn-txt">Disconnected</span>
+      </div>
+      <div class="me-badge">
+        <div class="avatar" id="me-avatar">?</div>
+        <span id="me-name">me</span>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Sign out
+      </button>
+    </div>
+  </header>
+
+  <div class="body-layout">
+
+    <aside class="sidebar">
+
+      <div class="sb-section">
+        <div class="sb-head">
+          <span class="sb-label">Rooms</span>
+          <button class="sb-add" onclick="toggleAddRoom()" title="Add room">+</button>
+        </div>
+        <div class="add-row" id="add-room-row">
+          <input type="text" class="mini-input" id="new-room-input"
+            placeholder="room-name" onkeydown="if(event.key==='Enter')addRoom()" />
+          <button class="mini-btn" onclick="addRoom()">Join</button>
+        </div>
+        <nav id="rooms-list"></nav>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-head">
+          <span class="sb-label">Direct messages</span>
+          <button class="sb-add" onclick="toggleUserSearch()" title="New DM">+</button>
+        </div>
+        <div class="search-wrap" id="user-search-wrap" style="display:none">
+          <input type="text" class="mini-input" id="user-search-input"
+            placeholder="Search users..." oninput="debounceSearch(this.value)" />
+          <div id="user-search-results" class="search-drop"></div>
+        </div>
+        <nav id="dms-list"></nav>
+      </div>
+
+    </aside>
+
+    <main class="chat-area">
+
+      <div id="empty-state" class="empty-state">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" style="opacity:.25">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>No conversation open</h3>
+        <p>Select a room or start a direct message.</p>
+      </div>
+
+      <div id="channel-view" class="channel-view" style="display:none">
+        <div class="ch-header">
+          <span class="ch-icon" id="ch-icon">#</span>
+          <span class="ch-name" id="ch-name">general</span>
+          <span class="ch-sub"  id="ch-sub">group room</span>
+        </div>
+        <div class="msg-feed" id="msg-feed">
+          <div id="feed-empty" class="feed-empty">No messages yet — say hello!</div>
+          <div id="feed-list"></div>
+        </div>
+        <div class="compose">
+          <textarea id="compose-input" class="compose-input" rows="1"
+            placeholder="Message..."
+            onkeydown="handleKey(event)"
+            oninput="growInput(this)"></textarea>
+          <button class="compose-send" onclick="sendMessage()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<!-- CDN scripts first, then our app -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
