@@ -14,9 +14,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
+    
 // HIGHEST_PRECEDENCE + 99 ensures our JWT interceptor runs before Spring Security's
 // own channel security interceptors, so the Principal is set before they check it.
-@Order(Ordered.HIGHEST_PRECEDENCE + 99)
+
+    @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
@@ -34,7 +36,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:*", "http://127.0.0.1:*", "null")
+                .setAllowedOriginPatterns("http://localhost:*", "http://127.0.0.1:*", "null,"https://*.netlify.app"")
                 .withSockJS();
     }
 
