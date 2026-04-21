@@ -157,7 +157,7 @@ public class ChatController {
     private MessageDTO errorDTO(String message) {
         return MessageDTO.builder()
             .content(message)
-            .type(Message.MessageType.ERROR)  // FIX: use ERROR type, not LEAVE
+            .type(Message.MessageType.ERROR)  
             .sentAt(LocalDateTime.now())
             .build();
     }
