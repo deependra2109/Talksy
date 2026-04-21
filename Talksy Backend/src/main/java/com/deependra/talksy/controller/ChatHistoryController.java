@@ -16,19 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
- /* GET /api/chat/history/group/{room}?limit=50
-   Returns last N messages in a group room (newest first).
 
-   GET /api/chat/history/private/{otherUsername}?limit=50
-      Returns conversation between the authenticated user and otherUsername.
-
-  GET /api/users/search?q=alice
-      Returns users whose username contains the query string.
-      Requires q to be at least 2 characters.
-
-  GET /api/users/me
-      Returns the currently authenticated user's profile.
- */
 @RestController
 @RequiredArgsConstructor
 public class ChatHistoryController {
