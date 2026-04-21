@@ -1,7 +1,7 @@
 'use strict';
 
-const API_BASE = '';
-const WS_URL   = '/ws';
+const API_BASE = 'https://talksy-0c7z.onrender.com';
+const WS_URL   = 'https://talksy-0c7z.onrender.com/ws';
 
 let token      = null;
 let myUsername = null;
