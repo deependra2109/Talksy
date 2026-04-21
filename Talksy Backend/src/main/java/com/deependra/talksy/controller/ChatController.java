@@ -20,29 +20,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-/**
- * Handles all real-time WebSocket messages.
- *
- * GROUP CHAT
- *   Client  →  /app/chat.group       (InboundMessageDTO: set room)
- *   Server  →  /topic/chat/{room}    (broadcast to all room subscribers)
- *
- * PRIVATE CHAT
- *   Client  →  /app/chat.private     (InboundMessageDTO: set recipientUsername)
- *   Server  →  /user/{recipient}/queue/messages   (recipient only)
- *              /user/{sender}/queue/messages       (sender echo)
- *
- * JOIN EVENT
- *   Client  →  /app/chat.join        (InboundMessageDTO: set room)
- *   Server  →  /topic/chat/{room}    (system JOIN event to all room subscribers)
- *
- * ERROR EVENTS
- *   Server  →  /user/queue/errors    (only to the user who caused the error)
- *   Client must subscribe to /user/queue/errors to receive these.
- *
- * SECURITY: sender username is ALWAYS taken from the authenticated Principal,
- * never from the client payload — prevents impersonation.
- */
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
