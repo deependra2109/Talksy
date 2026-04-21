@@ -1,8 +1,7 @@
 'use strict';
 
-
-const API_BASE = 'http://localhost:8080';
-const WS_URL   = 'http://localhost:8080/ws';
+const API_BASE = '';
+const WS_URL   = '/ws';
 
 let token      = null;
 let myUsername = null;
