@@ -236,7 +236,7 @@ This project is protected. No part of this codebase may be copied, reused, distr
 Author
 
 Deependra Kumar
-💻 Passionate about backend engineering and building scalable systems
+💻 Passionate about Full Stack Ai engineering and building scalable systems
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?logo=linkedin&logoColor=white&style=for-the-badge)](https://www.linkedin.com/in/deependra-kumar21/)
 [![GitHub](https://img.shields.io/badge/GitHub-black?logo=github&logoColor=white&style=for-the-badge)](https://github.com/deependra2109)
